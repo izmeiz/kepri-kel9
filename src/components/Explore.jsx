@@ -6,11 +6,28 @@ Modal.setAppElement('#root'); // Ganti '#root' dengan id elemen root aplikasi An
 
 function Explore() {
   const [showMap, setShowMap] = useState(false);
+  const [selectedCity, setSelectedCity] = useState(null);
+  const [showMore, setShowMore] = useState(false);
 
   const cities = [
-    { name: 'Batam', position: [1.0746717731004478, 104.00390827845062], imageUrl: 'https://i.pinimg.com/564x/ee/42/eb/ee42eb3733bcf2603512f851e30abc5f.jpg' },
-    { name: 'Tanjung Pinang', position: [0.9171, 104.4463], imageUrl: 'https://i.pinimg.com/564x/da/eb/4c/daeb4cbb4f9df144aaa4f8c1758fc6a5.jpg' },
-    { name: 'Bintan', position: [1.1367, 104.2167], imageUrl: 'https://a.cdn-hotels.com/gdcs/production112/d106/4c32934d-1fd6-43cb-b7b1-97bd9370d494.jpg?impolicy=fcrop&w=800&h=533&q=medium' },
+    { 
+      name: 'Batam', 
+      position: [1.1301, 104.0529], 
+      imageUrl: 'https://i.pinimg.com/564x/ee/42/eb/ee42eb3733bcf2603512f851e30abc5f.jpg', 
+      places: ['Nagoya Hill', 'Batam Centre', 'Maha Vihara Duta Maitreya', 'Barelang Bridge', 'Ocarina Park'] 
+    },
+    { 
+      name: 'Tanjung Pinang', 
+      position: [0.9171, 104.4463], 
+      imageUrl: 'https://i.pinimg.com/564x/da/eb/4c/daeb4cbb4f9df144aaa4f8c1758fc6a5.jpg', 
+      places: ['Penyengat Island', 'Tanjungpinang City Center', 'Akvatiq World of Water', 'Hutan Mangrove', 'Vihara Avalokitesvara'] 
+    },
+    { 
+      name: 'Bintan', 
+      position: [1.1367, 104.2167], 
+      imageUrl: 'https://a.cdn-hotels.com/gdcs/production112/d106/4c32934d-1fd6-43cb-b7b1-97bd9370d494.jpg?impolicy=fcrop&w=800&h=533&q=medium', 
+      places: ['Lagoi Bay', 'Crystal Lagoon', 'Trikora Beach', 'Gunung Bintan', '500 Lohan Temple'] 
+    },
   ];
 
   const handleSeeAllClick = (event) => {
@@ -22,6 +39,38 @@ function Explore() {
     window.open(`https://www.google.com/maps/search/?api=1&query=${city.position[0]},${city.position[1]}`, '_blank');
   };
 
+  const handleMarkerClick = (city) => {
+    setSelectedCity(city);
+    setShowMore(false);
+  };
+
+  const handlePlaceClick = (place) => {
+    const query = encodeURIComponent(place);
+    window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
+  };
+
+  const renderPopupContent = (city) => {
+    if (!city) return null;
+
+    const placesToShow = showMore ? city.places : city.places.slice(0, 5);
+
+    return (
+      <div>
+        <h3>{city.name}</h3>
+        <ul>
+          {placesToShow.map((place, index) => (
+            <li key={index} onClick={() => handlePlaceClick(place)} style={{ cursor: 'pointer', textDecoration: 'underline', color: 'blue' }}>
+              {place}
+            </li>
+          ))}
+        </ul>
+        {!showMore && city.places.length > 5 && (
+          <button onClick={() => setShowMore(true)}>Show more</button>
+        )}
+      </div>
+    );
+  };
+
   return (
     <section id="services">
       <div className="explore_container">
@@ -31,16 +80,16 @@ function Explore() {
           className="explore_background-image"
         />
         <div className="explore_content">
-          <div className="explore_title">explore Places</div>
+          <div className="explore_title">Explore Places</div>
           <div className="explore_main">
             <div className="explore_columns">
               <div className="explore_column">
                 <div className="explore_text-container">
                   <div className="explore_text">
-                    Ini merupakan tiga kota utama yang sangat populer dengan kepulauan riau dan cocok untuk first experience anda yang kami rekomendasikan, beserta maps nya
+                    Ini merupakan tiga kota utama yang sangat populer dengan Kepulauan Riau dan cocok untuk pengalaman pertama Anda yang kami rekomendasikan, beserta peta-nya
                   </div>
                   <div className="explore_button-container">
-                    <div onClick={handleSeeAllClick} className="explore_button-text">See all</div>
+                    <div onClick={handleSeeAllClick} className="explore_button-text">See location</div>
                     <img
                       loading="lazy"
                       src="https://cdn.builder.io/api/v1/image/assets/TEMP/3eeb96d1e4c1df8c2aeac0624fcf91ce73c731e5876c02ef1b9e24d2840fcbf5?"
@@ -90,8 +139,8 @@ function Explore() {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           {cities.map((city, index) => (
-            <Marker key={index} position={city.position}>
-              <Popup>{city.name}</Popup>
+            <Marker key={index} position={city.position} eventHandlers={{ click: () => handleMarkerClick(city) }}>
+              <Popup>{renderPopupContent(city)}</Popup>
             </Marker>
           ))}
         </MapContainer>
