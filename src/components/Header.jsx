@@ -92,7 +92,7 @@ function Header() {
           </div>
         </div>
         {weatherData && (
-          <div className="weather-info">
+          <div className="weather-info" style={{ position: 'absolute', top: '10px', left: '10px', background: 'rgba(255, 255, 255, 0.7)', padding: '10px', borderRadius: '5px' }}>
             <img src={`http://openweathermap.org/img/wn/${weatherData.list[0].weather[0].icon}.png`} alt="Cuaca Icon" />
             <p><strong>Cuaca:</strong> {weatherData.list[0].weather[0].description}</p>
             <p><strong>Suhu:</strong> {(weatherData.list[0].main.temp - 273.15).toFixed(2)}°C</p>
