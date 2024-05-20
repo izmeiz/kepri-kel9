@@ -27,8 +27,7 @@ const TimezoneData = () => {
     <div>
       {data ? (
         <div>
-          <p>Time: {currentTime.toLocaleString('en-GB', { timeZone: data.timezone })}</p>
-          <p>Timezone: {data.timezone}</p>
+          <p>Time: {currentTime.toLocaleTimeString()}</p>
         </div>
       ) : (
         <p>Loading...</p>
@@ -46,14 +45,14 @@ const Navbar = () => {
 
   return (
     <nav>
-      <TimezoneData />
       <div className="nav__logo"><a href="#">KEPULAUAN RIAU</a></div>
-      <div className={`hamburger ${active ? 'active' : ''}`} onClick={toggleMenu}>
+      <TimezoneData />
+      <div className={hamburger ${active ? 'active' : ''}} onClick={toggleMenu}>
         <span className="bar"></span>
         <span className="bar"></span>
         <span className="bar"></span>
       </div>
-      <ul className={`nav__links ${active ? 'active' : ''}`} id="navLinks">
+      <ul className={nav__links ${active ? 'active' : ''}} id="navLinks">
         <li className="link"><a className="Nav_word" href="#home">Home</a></li>
         <li className="link"><a className="Nav_word" href="#blog">Why</a></li>
         <li className="link"><a className="Nav_word" href="#offers">Top</a></li>
