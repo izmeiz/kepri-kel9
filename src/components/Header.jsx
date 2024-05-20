@@ -12,39 +12,34 @@ function Header() {
   const [backgroundImage2, setBackgroundImage2] = useState(null);
   const [opacity1, setOpacity1] = useState(1);
   const [opacity2, setOpacity2] = useState(0);
-  const apiKey = process.env.REACT_APP_UNSPLASH_API_KEY;
-  const weatherApiKey = process.env.REACT_APP_OPENWEATHER_API_KEY;
+  const apiKey = 'N2vxZdo0V9dWW1INvAysc-gefZvVCZt4rtTbH1ORUoM';
   const riauPhotoIds = ['ruwpbWIi-hM', 'twT0WaoMRuA', 'QXpDBgiH_Oo']; 
 
   useEffect(() => {
     const getWeatherData = async () => {
       try {
-        const searchUrl = `https://api.openweathermap.org/data/2.5/find?q=Kepulauan%20Riau&appid=${weatherApiKey}`;
+        const searchUrl = `http://api.openweathermap.org/data/2.5/find?q=Kepulauan%20Riau&appid=e3bc928bf853110937875f042902994b`;
         const response = await fetch(searchUrl);
         const data = await response.json();
 
-        if (data.count === 0) {
-          throw new Error('No weather data found');
-        }
-
         const kepulauanRiauID = data.list[0].id;
 
-        const weatherUrl = `https://api.openweathermap.org/data/2.5/forecast?id=${kepulauanRiauID}&appid=${weatherApiKey}`;
+        const weatherUrl = `http://api.openweathermap.org/data/2.5/forecast?id=${kepulauanRiauID}&appid=e3bc928bf853110937875f042902994b`;
         const weatherResponse = await fetch(weatherUrl);
         const weatherData = await weatherResponse.json();
 
         setWeatherData(weatherData);
       } catch (error) {
-        console.error('Error fetching weather data:', error);
+        console.error(error);
       }
     };
 
     getWeatherData();
-  }, [weatherApiKey]);
+  }, []);
 
   useEffect(() => {
     let index = 0;
-    const intervalId = setInterval(() => {
+    setInterval(() => {
       const url = `https://api.unsplash.com/photos/${riauPhotoIds[index]}?client_id=${apiKey}`;
       fetch(url)
         .then(response => response.json())
@@ -59,14 +54,12 @@ function Header() {
             setOpacity2(1);
           }
         })
-        .catch(error => console.error('Error fetching photo:', error));
+        .catch(error => console.error(error));
       index = (index + 1) % riauPhotoIds.length;
-    }, 5000);
-
-    return () => clearInterval(intervalId);
+    }, 5000); // Interval 5 detik
   }, [riauPhotoIds, apiKey]);
 
-  const position = [1.0, 105.0];  // Coordinates for Kepulauan Riau
+  const position = [1.0, 105.0];  // Koordinat yang lebih umum untuk Kepulauan Riau
 
   const handleReadMoreClick = () => {
     setShowMap(!showMap);
