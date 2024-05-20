@@ -8,23 +8,20 @@ Modal.setAppElement('#root');
 function Header() {
   const [weatherData, setWeatherData] = useState(null);
   const [showMap, setShowMap] = useState(false);
-  const [backgroundImage1, setBackgroundImage1] = useState(null);
-  const [backgroundImage2, setBackgroundImage2] = useState(null);
-  const [opacity1, setOpacity1] = useState(1);
-  const [opacity2, setOpacity2] = useState(0);
+  const [backgroundImage, setBackgroundImage] = useState(null);
   const apiKey = 'N2vxZdo0V9dWW1INvAysc-gefZvVCZt4rtTbH1ORUoM';
   const riauPhotoIds = ['ruwpbWIi-hM', 'twT0WaoMRuA', 'QXpDBgiH_Oo']; 
 
   useEffect(() => {
     const getWeatherData = async () => {
       try {
-        const searchUrl = `http://api.openweathermap.org/data/2.5/find?q=Kepulauan%20Riau&appid=e3bc928bf853110937875f042902994b`;
+        const searchUrl = `https://api.openweathermap.org/data/2.5/find?q=Kepulauan%20Riau&appid=e3bc928bf853110937875f042902994b`;
         const response = await fetch(searchUrl);
         const data = await response.json();
 
         const kepulauanRiauID = data.list[0].id;
 
-        const weatherUrl = `http://api.openweathermap.org/data/2.5/forecast?id=${kepulauanRiauID}&appid=e3bc928bf853110937875f042902994b`;
+        const weatherUrl = `https://api.openweathermap.org/data/2.5/forecast?id=${kepulauanRiauID}&appid=e3bc928bf853110937875f042902994b`;
         const weatherResponse = await fetch(weatherUrl);
         const weatherData = await weatherResponse.json();
 
@@ -44,19 +41,11 @@ function Header() {
       fetch(url)
         .then(response => response.json())
         .then(photo => {
-          if (index % 2 === 0) {
-            setBackgroundImage1(`url('${photo.urls.regular}')`);
-            setOpacity1(1);
-            setOpacity2(0);
-          } else {
-            setBackgroundImage2(`url('${photo.urls.regular}')`);
-            setOpacity1(0);
-            setOpacity2(1);
-          }
+          setBackgroundImage(url('${photo.urls.regular}'));
         })
         .catch(error => console.error(error));
       index = (index + 1) % riauPhotoIds.length;
-    }, 5000); // Interval 5 detik
+    }, 4000); // Interval 4 detik
   }, [riauPhotoIds, apiKey]);
 
   const position = [1.0, 105.0];  // Koordinat yang lebih umum untuk Kepulauan Riau
@@ -67,8 +56,7 @@ function Header() {
 
   return (
     <header id="home">
-      <div className="background" style={{ backgroundImage: backgroundImage1, opacity: opacity1 }}></div>
-      <div className="background" style={{ backgroundImage: backgroundImage2, opacity: opacity2 }}></div>
+      <div className="background" style={{ backgroundImage: backgroundImage }}></div>
       <div className="section__container">
         <div className="header__content">
           <div>
@@ -82,7 +70,7 @@ function Header() {
         </div>
         {weatherData && (
           <div className="weather-info">
-            <img src={`http://openweathermap.org/img/wn/${weatherData.list[0].weather[0].icon}.png`} alt="Cuaca Icon" />
+            <img src={https://openweathermap.org/img/wn/${weatherData.list[0].weather[0].icon}.png} alt="Cuaca Icon" />
             <p><strong>Cuaca:</strong> {weatherData.list[0].weather[0].description}</p>
             <p><strong>Suhu:</strong> {(weatherData.list[0].main.temp - 273.15).toFixed(2)}°C</p>
             <p><strong>Kota:</strong> {weatherData.city.name}</p>
