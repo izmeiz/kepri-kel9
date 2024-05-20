@@ -47,12 +47,12 @@ const Navbar = () => {
     <nav>
       <div className="nav__logo"><a href="#">KEPULAUAN RIAU</a></div>
       <TimezoneData />
-      <div className={hamburger ${active ? 'active' : ''}} onClick={toggleMenu}>
+      <div className={`hamburger ${active ? 'active' : ''}`} onClick={toggleMenu}>
         <span className="bar"></span>
         <span className="bar"></span>
         <span className="bar"></span>
       </div>
-      <ul className={nav__links ${active ? 'active' : ''}} id="navLinks">
+      <ul className={`nav__links ${active ? 'active' : ''}`} id="navLinks">
         <li className="link"><a className="Nav_word" href="#home">Home</a></li>
         <li className="link"><a className="Nav_word" href="#blog">Why</a></li>
         <li className="link"><a className="Nav_word" href="#offers">Top</a></li>
