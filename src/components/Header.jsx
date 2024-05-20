@@ -10,7 +10,7 @@ function Header() {
   const [showMap, setShowMap] = useState(false);
   const [backgroundImage, setBackgroundImage] = useState(null);
   const apiKey = 'N2vxZdo0V9dWW1INvAysc-gefZvVCZt4rtTbH1ORUoM';
-  const riauPhotoIds = ['ruwpbWIi-hM', 'twT0WaoMRuA', 'QXpDBgiH_Oo']; 
+  const riauPhotoIds = ['ruwpbWIi-hM', 'twT0WaoMRuA', 'QXpDBgiH_Oo'];
 
   useEffect(() => {
     const getWeatherData = async () => {
@@ -36,19 +36,21 @@ function Header() {
 
   useEffect(() => {
     let index = 0;
-    setInterval(() => {
+    const interval = setInterval(() => {
       const url = `https://api.unsplash.com/photos/${riauPhotoIds[index]}?client_id=${apiKey}`;
       fetch(url)
         .then(response => response.json())
         .then(photo => {
-          setBackgroundImage(url('${photo.urls.regular}'));
+          setBackgroundImage(`url(${photo.urls.regular})`);
         })
         .catch(error => console.error(error));
       index = (index + 1) % riauPhotoIds.length;
-    }, 4000); // Interval 4 detik
+    }, 4000); // Interval 4 seconds
+
+    return () => clearInterval(interval); // Clean up the interval on unmount
   }, [riauPhotoIds, apiKey]);
 
-  const position = [1.0, 105.0];  // Koordinat yang lebih umum untuk Kepulauan Riau
+  const position = [1.0, 105.0];  // General coordinates for Kepulauan Riau
 
   const handleReadMoreClick = () => {
     setShowMap(!showMap);
@@ -70,7 +72,7 @@ function Header() {
         </div>
         {weatherData && (
           <div className="weather-info">
-            <img src={https://openweathermap.org/img/wn/${weatherData.list[0].weather[0].icon}.png} alt="Cuaca Icon" />
+            <img src={`https://openweathermap.org/img/wn/${weatherData.list[0].weather[0].icon}.png`} alt="Weather Icon" />
             <p><strong>Cuaca:</strong> {weatherData.list[0].weather[0].description}</p>
             <p><strong>Suhu:</strong> {(weatherData.list[0].main.temp - 273.15).toFixed(2)}°C</p>
             <p><strong>Kota:</strong> {weatherData.city.name}</p>
@@ -88,6 +90,7 @@ function Header() {
             },
           }}
         >
+          <button onClick={handleReadMoreClick} style={{ position: 'absolute', top: 10, right: 10 }}>Close</button>
           <MapContainer center={position} zoom={7} style={{ height: "100%", width: "100%" }}>
             <TileLayer
               attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
