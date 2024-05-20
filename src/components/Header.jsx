@@ -15,28 +15,22 @@ function Header() {
   const apiKey = 'N2vxZdo0V9dWW1INvAysc-gefZvVCZt4rtTbH1ORUoM';
   const riauPhotoIds = ['ruwpbWIi-hM', 'twT0WaoMRuA', 'QXpDBgiH_Oo']; 
 
-    useEffect(() => {
+  useEffect(() => {
     const getWeatherData = async () => {
       try {
-        const searchUrl = `https://api.openweathermap.org/data/2.5/find?q=Kepulauan%20Riau&appid=e3bc928bf853110937875f042902994b`;
+        const searchUrl = `http://api.openweathermap.org/data/2.5/find?q=Kepulauan%20Riau&appid=e3bc928bf853110937875f042902994b`;
         const response = await fetch(searchUrl);
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status} ${response.statusText}`);
-        }
         const data = await response.json();
 
         const kepulauanRiauID = data.list[0].id;
 
-        const weatherUrl = `https://api.openweathermap.org/data/2.5/forecast?id=${kepulauanRiauID}&appid=e3bc928bf853110937875f042902994b`;
+        const weatherUrl = `http://api.openweathermap.org/data/2.5/forecast?id=${kepulauanRiauID}&appid=e3bc928bf853110937875f042902994b`;
         const weatherResponse = await fetch(weatherUrl);
-        if (!weatherResponse.ok) {
-          throw new Error(`Error: ${weatherResponse.status} ${weatherResponse.statusText}`);
-        }
         const weatherData = await weatherResponse.json();
 
         setWeatherData(weatherData);
       } catch (error) {
-        console.error('Fetching weather data failed:', error);
+        console.error(error);
       }
     };
 
@@ -45,15 +39,10 @@ function Header() {
 
   useEffect(() => {
     let index = 0;
-    const intervalId = setInterval(() => {
+    setInterval(() => {
       const url = `https://api.unsplash.com/photos/${riauPhotoIds[index]}?client_id=${apiKey}`;
       fetch(url)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`Error: ${response.status} ${response.statusText}`);
-          }
-          return response.json();
-        })
+        .then(response => response.json())
         .then(photo => {
           if (index % 2 === 0) {
             setBackgroundImage1(`url('${photo.urls.regular}')`);
@@ -65,12 +54,12 @@ function Header() {
             setOpacity2(1);
           }
         })
-        .catch(error => console.error('Fetching photo failed:', error));
+        .catch(error => console.error(error));
       index = (index + 1) % riauPhotoIds.length;
-    }, 5000);
-
-    return () => clearInterval(intervalId); // Clean up interval on component unmount
+    }, 5000); // Interval 5 detik
   }, [riauPhotoIds, apiKey]);
+
+  const position = [1.0, 105.0];  // Koordinat yang lebih umum untuk Kepulauan Riau
 
   const handleReadMoreClick = () => {
     setShowMap(!showMap);
@@ -92,7 +81,7 @@ function Header() {
           </div>
         </div>
         {weatherData && (
-          <div className="weather-info" style={{ position: 'absolute', top: '10px', left: '10px', background: 'rgba(255, 255, 255, 0.7)', padding: '10px', borderRadius: '5px' }}>
+          <div className="weather-info">
             <img src={`http://openweathermap.org/img/wn/${weatherData.list[0].weather[0].icon}.png`} alt="Cuaca Icon" />
             <p><strong>Cuaca:</strong> {weatherData.list[0].weather[0].description}</p>
             <p><strong>Suhu:</strong> {(weatherData.list[0].main.temp - 273.15).toFixed(2)}°C</p>
