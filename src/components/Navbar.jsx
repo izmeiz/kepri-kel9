@@ -57,7 +57,7 @@ const Navbar = () => {
         <li className="link"><a className="Nav_word" href="#blog">Why</a></li>
         <li className="link"><a className="Nav_word" href="#offers">Top</a></li>
         <li className="link"><a className="Nav_word" href="#services">Explore</a></li>
-        <li className="link"><a className="Nav_word" href="#contacts">About Us & Feedback</a></li>
+        <li className="link"><a className="Nav_word" href="#contacts">About Us</a></li>
       </ul>
     </nav>
   );
