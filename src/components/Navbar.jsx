@@ -5,7 +5,7 @@ const TimezoneData = () => {
   const [currentTime, setCurrentTime] = useState(null);
 
   useEffect(() => {
-    fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://worldtimeapi.org/api/timezone/Asia/Jakarta'))
+    fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('http://worldtimeapi.org/api/timezone/Asia/Jakarta'))
       .then(response => response.json())
       .then(data => {
         const parsedData = JSON.parse(data.contents);
@@ -58,7 +58,7 @@ const Navbar = () => {
         <li className="link"><a className="Nav_word" href="#blog">Why</a></li>
         <li className="link"><a className="Nav_word" href="#offers">Top</a></li>
         <li className="link"><a className="Nav_word" href="#services">Explore</a></li>
-        <li className="link"><a className="Nav_word" href="#contacts">About Us & Feedback</a></li>
+        <li className="link"><a className="Nav_word" href="#contacts">About Us</a></li>
       </ul>
     </nav>
   );
