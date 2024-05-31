@@ -724,21 +724,30 @@ html {
 /* CSS BAGIAN ULASAN */
 #reviewComponent {
   font-family: Arial, sans-serif !important;
-  background-color: #f0f0f0 !important; /* Mengganti variabel dengan warna spesifik */
+  background-color: #f0f0f0 !important;
   color: black !important;
-  box-sizing: border-box !important; /* Menambahkan box-sizing */
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 20px !important;
+  width: 100% !important;
+  min-height: 100vh !important;
+  margin: 0 auto !important;
 }
+
 #reviewComponent #reviewBox,
 #reviewComponent #displayArea {
   width: 80% !important;
   padding: 20px !important;
   border-radius: 5px !important;
   box-shadow: 0 0 10px rgba(0,0,0,0.1) !important;
-  margin: 50px auto !important;
+  margin: 20px 0 !important;
   background-color: white !important;
   overflow-wrap: break-word !important;
-  height: auto !important; /* Mengubah height menjadi auto */
 }
+
 #reviewComponent #reviewBox label,
 #reviewComponent #reviewBox input[type="text"],
 #reviewComponent #reviewBox input[type="email"],
@@ -748,6 +757,7 @@ html {
   width: 100% !important;
   margin-bottom: 10px !important;
 }
+
 #reviewComponent #submitButton {
   padding: 10px !important;
   border: none !important;
@@ -756,20 +766,23 @@ html {
   background-color: #3498db !important;
   color: white !important;
 }
+
 #reviewComponent .star-rating {
-  direction: ltr !important;
   display: flex !important;
   justify-content: flex-start !important;
-  padding: 20px !important;
+  padding: 20px 0 !important;
 }
+
 #reviewComponent .star-rating input[type=radio] {
   display: none !important;
 }
+
 #reviewComponent .star-rating label:before {
   content: "☆" !important;
   margin: 5px !important;
   font-size: 1.5em !important;
 }
+
 #reviewComponent .star-rating input[type=radio]:checked ~ label:before,
 #reviewComponent .star-rating label:hover ~ label:before,
 #reviewComponent .star-rating label:hover:before {
@@ -784,7 +797,6 @@ html {
       width: 90% !important;
   }
 }
-
 
 /* CSS FOOTER */
 
