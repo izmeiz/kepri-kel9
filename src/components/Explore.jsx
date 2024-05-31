@@ -22,23 +22,23 @@ function Explore() {
   };
 
   const handleImageClick = (city) => {
-    window.open(https://www.google.com/maps/search/?api=1&query=${city.position[0]},${city.position[1]}, '_blank');
+    window.open(`https://www.google.com/maps/search/?api=1&query=${city.position[0]},${city.position[1]}`, '_blank');
   };
 
   const fetchWeatherData = async (lat, lon) => {
     const apiKey = 'e3bc928bf853110937875f042902994b'; // API key Anda
-    const url = https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric;
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
 
     try {
-        const response = await fetch(url);
-        const data = await response.json();
-        setWeather({
-            temperature: data.main.temp,
-            description: data.weather[0].description,
-            icon: http://openweathermap.org/img/wn/${data.weather[0].icon}.png
-        });
+      const response = await fetch(url);
+      const data = await response.json();
+      setWeather({
+        temperature: data.main.temp,
+        description: data.weather[0].description,
+        icon: `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`
+      });
     } catch (error) {
-        console.error('Error fetching weather data:', error);
+      console.error('Error fetching weather data:', error);
     }
   };
 
@@ -50,7 +50,7 @@ function Explore() {
 
   const handlePlaceClick = (place) => {
     const query = encodeURIComponent(place);
-    window.open(https://www.google.com/maps/search/?api=1&query=${query}, '_blank');
+    window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
   };
 
   const renderPopupContent = (city) => {
