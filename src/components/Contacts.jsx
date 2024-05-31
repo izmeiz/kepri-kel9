@@ -58,8 +58,8 @@ const Contacts = () => {
                     <div className="star-rating">
                         {[1, 2, 3, 4, 5].map((star) => (
                             <React.Fragment key={star}>
-                                <input type="radio" id={${star}-stars} name="rating" value={star} checked={rating === star} onChange={() => setRating(star)} />
-                                <label htmlFor={${star}-stars}></label>
+                                <input type="radio" id={`${star}-stars`} name="rating" value={star} checked={rating === star} onChange={() => setRating(star)} />
+                                <label htmlFor={`${star}-stars`}></label>
                             </React.Fragment>
                         ))}
                     </div>
