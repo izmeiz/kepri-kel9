@@ -8,26 +8,12 @@ function Explore() {
   const [showMap, setShowMap] = useState(false);
   const [selectedCity, setSelectedCity] = useState(null);
   const [showMore, setShowMore] = useState(false);
+  const [weather, setWeather] = useState(null);
 
   const cities = [
-    { 
-      name: 'Batam', 
-      position: [1.1301, 104.0529], 
-      imageUrl: 'https://i.pinimg.com/564x/ee/42/eb/ee42eb3733bcf2603512f851e30abc5f.jpg', 
-      places: ['Nagoya Hill', 'Batam Centre', 'Maha Vihara Duta Maitreya', 'Barelang Bridge', 'Ocarina Park'] 
-    },
-    { 
-      name: 'Tanjung Pinang', 
-      position: [0.9171, 104.4463], 
-      imageUrl: 'https://i.pinimg.com/564x/da/eb/4c/daeb4cbb4f9df144aaa4f8c1758fc6a5.jpg', 
-      places: ['Penyengat Island', 'Tanjungpinang City Center', 'Akvatiq World of Water', 'Hutan Mangrove', 'Vihara Avalokitesvara'] 
-    },
-    { 
-      name: 'Bintan', 
-      position: [1.1367, 104.2167], 
-      imageUrl: 'https://a.cdn-hotels.com/gdcs/production112/d106/4c32934d-1fd6-43cb-b7b1-97bd9370d494.jpg?impolicy=fcrop&w=800&h=533&q=medium', 
-      places: ['Lagoi Bay', 'Crystal Lagoon', 'Trikora Beach', 'Gunung Bintan', '500 Lohan Temple'] 
-    },
+    { name: 'Batam', position: [1.1301, 104.0529], imageUrl: 'https://i.pinimg.com/564x/ee/42/eb/ee42eb3733bcf2603512f851e30abc5f.jpg', places: ['Nagoya Hill', 'Batam Centre', 'Maha Vihara Duta Maitreya', 'Barelang Bridge', 'Ocarina Park'] },
+    { name: 'Tanjung Pinang', position: [0.9171, 104.4463], imageUrl: 'https://i.pinimg.com/564x/da/eb/4c/daeb4cbb4f9df144aaa4f8c1758fc6a5.jpg', places: ['Penyengat Island', 'Tanjungpinang City Center', 'Akvatiq World of Water', 'Hutan Mangrove', 'Vihara Avalokitesvara'] },
+    { name: 'Bintan', position: [1.1367, 104.2167], imageUrl: 'https://a.cdn-hotels.com/gdcs/production112/d106/4c32934d-1fd6-43cb-b7b1-97bd9370d494.jpg?impolicy=fcrop&w=800&h=533&q=medium', places: ['Lagoi Bay', 'Crystal Lagoon', 'Trikora Beach', 'Gunung Bintan', '500 Lohan Temple'] },
   ];
 
   const handleSeeAllClick = (event) => {
@@ -36,17 +22,35 @@ function Explore() {
   };
 
   const handleImageClick = (city) => {
-    window.open(`https://www.google.com/maps/search/?api=1&query=${city.position[0]},${city.position[1]}`, '_blank');
+    window.open(https://www.google.com/maps/search/?api=1&query=${city.position[0]},${city.position[1]}, '_blank');
+  };
+
+  const fetchWeatherData = async (lat, lon) => {
+    const apiKey = 'e3bc928bf853110937875f042902994b'; // API key Anda
+    const url = https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        setWeather({
+            temperature: data.main.temp,
+            description: data.weather[0].description,
+            icon: http://openweathermap.org/img/wn/${data.weather[0].icon}.png
+        });
+    } catch (error) {
+        console.error('Error fetching weather data:', error);
+    }
   };
 
   const handleMarkerClick = (city) => {
     setSelectedCity(city);
     setShowMore(false);
+    fetchWeatherData(city.position[0], city.position[1]);
   };
 
   const handlePlaceClick = (place) => {
     const query = encodeURIComponent(place);
-    window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
+    window.open(https://www.google.com/maps/search/?api=1&query=${query}, '_blank');
   };
 
   const renderPopupContent = (city) => {
@@ -67,6 +71,14 @@ function Explore() {
         {!showMore && city.places.length > 5 && (
           <button onClick={() => setShowMore(true)}>Show more</button>
         )}
+        {weather && (
+          <div>
+            <h4>Weather Info</h4>
+            <p>Temperature: {weather.temperature}°C</p>
+            <p>Description: {weather.description}</p>
+            <img src={weather.icon} alt={weather.description} />
+          </div>
+        )}
       </div>
     );
   };
@@ -80,16 +92,16 @@ function Explore() {
           className="explore_background-image"
         />
         <div className="explore_content">
-          <div className="explore_title">Explore Places</div>
+          <div className="explore_title">explore Places</div>
           <div className="explore_main">
             <div className="explore_columns">
               <div className="explore_column">
                 <div className="explore_text-container">
                   <div className="explore_text">
-                    Ini merupakan tiga kota utama yang sangat populer dengan Kepulauan Riau dan cocok untuk pengalaman pertama Anda yang kami rekomendasikan, beserta peta-nya
+                    Ini merupakan tiga kota utama yang sangat populer dengan kepulauan riau dan cocok untuk first experience anda yang kami rekomendasikan, beserta maps nya
                   </div>
                   <div className="explore_button-container">
-                    <div onClick={handleSeeAllClick} className="explore_button-text">See location</div>
+                    <div onClick={handleSeeAllClick} className="explore_button-text">See all</div>
                     <img
                       loading="lazy"
                       src="https://cdn.builder.io/api/v1/image/assets/TEMP/3eeb96d1e4c1df8c2aeac0624fcf91ce73c731e5876c02ef1b9e24d2840fcbf5?"
