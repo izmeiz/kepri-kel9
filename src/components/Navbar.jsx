@@ -3,26 +3,14 @@ import React, { useEffect, useState } from 'react';
 const TimezoneData = () => {
   const [data, setData] = useState(null);
   const [currentTime, setCurrentTime] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('http://worldtimeapi.org/api/timezone/Asia/Jakarta'))
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
+    fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://worldtimeapi.org/api/timezone/Asia/Jakarta'))
+      .then(response => response.json())
       .then(data => {
         const parsedData = JSON.parse(data.contents);
         setData(parsedData);
         setCurrentTime(new Date(parsedData.datetime));
-        setLoading(false);
-      })
-      .catch(error => {
-        setError(error);
-        setLoading(false);
       });
   }, []);
 
@@ -35,20 +23,15 @@ const TimezoneData = () => {
     }
   }, [currentTime]);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {error.message}</p>;
-  }
-
   return (
     <div>
-      {data && (
+      {data ? (
         <div>
-          <p>Time: {currentTime.toLocaleTimeString()}</p>
+          <p>Time: {currentTime.toLocaleString('en-GB', { timeZone: data.timezone })}</p>
+          <p>Timezone: {data.timezone}</p>
         </div>
+      ) : (
+        <p>Loading...</p>
       )}
     </div>
   );
@@ -63,8 +46,8 @@ const Navbar = () => {
 
   return (
     <nav>
-      <div className="nav__logo"><a href="#">KEPULAUAN RIAU</a></div>
       <TimezoneData />
+      <div className="nav__logo"><a href="#">KEPULAUAN RIAU</a></div>
       <div className={`hamburger ${active ? 'active' : ''}`} onClick={toggleMenu}>
         <span className="bar"></span>
         <span className="bar"></span>
@@ -75,16 +58,10 @@ const Navbar = () => {
         <li className="link"><a className="Nav_word" href="#blog">Why</a></li>
         <li className="link"><a className="Nav_word" href="#offers">Top</a></li>
         <li className="link"><a className="Nav_word" href="#services">Explore</a></li>
-        <li className="link"><a className="Nav_word" href="#contacts">About Us</a></li>
+        <li className="link"><a className="Nav_word" href="#contacts">About Us & Feedback</a></li>
       </ul>
     </nav>
   );
 };
 
-const App = () => (
-  <div>
-    <Navbar />
-  </div>
-);
-
-export default App;
+export default Navbar;
